@@ -26,7 +26,9 @@ Argument | Description
 -b, --bootstrap | Number of re-mixes*
 
 ```
-perl RECAP.pl --dirOrig --nameOrig --dirRemix --nameRemix --dirOutput --nameOutput --header --pvalCol --delim --MACS 
+perl RECAP.pl [--dirOrig] [--nameOrig] [--dirRemix] [--nameRemix] 
+              [--dirOutput] [--nameOutput] [--header] [--pvalCol] 
+              [--delim] [--MACS] 
 ```
 
 Argument | Description
