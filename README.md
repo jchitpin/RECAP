@@ -11,10 +11,10 @@ Download RECAP and extract to your desired directory. There should be two script
 The shell and Perl script should be runnable on any Unix system with Bash and Perl installed. 
 
 # Usage
-
-> bash RECAP_Re-Mix.sh [-i] [-t] [-c] [-o] [-m] [-b]  
-> perl RECAP.pl --dirOrig --nameOrig --dirRemix --nameRemix --dirOutput --nameOutput --header --pvalCol --delim --MACS 
-
+```
+bash RECAP_Re-Mix.sh [-i] [-t] [-c] [-o] [-m] [-b]  
+perl RECAP.pl --dirOrig --nameOrig --dirRemix --nameRemix --dirOutput --nameOutput --header --pvalCol --delim --MACS 
+```
 
 ## Parameters
 
