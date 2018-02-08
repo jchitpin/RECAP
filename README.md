@@ -12,12 +12,10 @@ Both scripts should be runnable on any Unix system with Bash and Perl installed.
 
 # Usage
 
-## RECAP_Re-Mix.sh
 ```
 bash RECAP_Re-Mix.sh [-i] [-t] [-c] [-o] [-m] [-b]  
 ```
 
-## RECAP.pl
 ```
 perl RECAP.pl --dirOrig --nameOrig --dirRemix --nameRemix --dirOutput --nameOutput --header --pvalCol --delim --MACS 
 ```
