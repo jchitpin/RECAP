@@ -8,15 +8,22 @@ Download RECAP and extract to your desired directory. There should be two script
 1.  RECAP_Re-Mix.sh
 1.  RECAP.pl
 
-The shell and Perl script should be runnable on any Unix system with Bash and Perl installed. 
+Both scripts should be runnable on any Unix system with Bash and Perl installed. 
 
 # Usage
+
+## RECAP_Re-Mix.sh
 ```
 bash RECAP_Re-Mix.sh [-i] [-t] [-c] [-o] [-m] [-b]  
+```
+
+## RECAP.pl
+```
 perl RECAP.pl --dirOrig --nameOrig --dirRemix --nameRemix --dirOutput --nameOutput --header --pvalCol --delim --MACS 
 ```
 
 ## Parameters
 
-## Example
+## Example Workflow
+
 
