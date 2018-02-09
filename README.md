@@ -82,13 +82,9 @@ Suppose we are interested in analyzing a treatment and control file with MACS an
     
     This will create several files including ```Analysis.bootstrap_1_peaks.xls```
     
-1.  Convert the MACS summary files to .txt extension. One way of doing that on the command line is:
+1.  Convert the MACS summary files to .txt extension. One way of converting all .xls files in a directory to .txt on the command line is:
 
-    ```for file in *.xls; do```
-    
-      ```mv "$file" "`basename "$file" .xls`.txt"```
-      
-    ```done```
+    ```for file in *.xls; do mv "$file" "`basename "$file" .xls`.txt"; done```
 
 1.  Recalibrate the *p*-values:
 
