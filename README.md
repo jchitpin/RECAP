@@ -28,7 +28,7 @@ Argument | Description
 ### Options(\*)
 
 **-m, --method**  
-Choose either *(e)qual* or *(u)nequal*. *Equal* distributes the treatment and control file reads into two equally sized re-mixed BED files. *Unequal* distributes the treatment and control file reads into two re-mixed BED files with the same read counts as the input files. *Unequal* is the recommended parameter.
+Choose either *equal* or *unequal*. *Equal* distributes the treatment and control file reads into two equally sized re-mixed BED files. *Unequal* distributes the treatment and control file reads into two re-mixed BED files with the same read counts as the input files. *Unequal* is the recommended parameter.
 
 **-b, --bootstrap**  
 *Bootstrap* is the number of times the treatment and control files are re-mixed to generate re-mixed BED files.
@@ -46,20 +46,52 @@ Argument | Description
 --dirRemix | Input re-mixed peak calling summary file directory
 --nameRemix | Re-mixed peak calling summary file
 --dirOutput | Output directory
---nameOutput | Original peak calling summary file with RECAP p-values
+--nameOutput | Original peak calling summary file with RECAP 
 --header | Number of header lines in peak calling summary file
---pvalCol | Column number containing p-values in summary file
+--pvalCol | Column number containing *p*-values in summary file
 --delim | Delimiter type*
 --MACS | Whether peak calling summary file belongs to MACS*
 
 ### Options(\*)
 
 **--delim**
-Choose either *(c)omma* or *(t)ab* delimiters depending on the output of your peak caller.
+Choose either *(c)omma* or *(t)ab* delimiters depending on the output of your peak caller. **NOTE: Version 1.0.1 cannot handle .xls files. Please convert them to .txt for RECAP.pl to work.**
 
 **--MACS**
-Choose either *(y)es* or *(n)o* if the peak caller used is MACS. Choosing yes converts the -log(p-values) to linear space p-values, a necessary step during p-value recalibration with RECAP.
+Choose either *(y)es* or *(n)o* if the peak caller used is MACS. Choosing *yes* antilogs the *p*-values, a necessary step during *p*-value recalibration with RECAP.
 
 ### Example Workflow
 
+Suppose we are interested in analyzing a treatment and control file with MACS and recalibrating the resulting *p*-values.
 
+1.  Re-mix treatment and control BED files: 
+
+    ```bash RECAP_Re-Mix.sh -i ~/ChIP-Seq/files -t Treatment.bed -c Control.bed -o ~/ChIP-Seq/files/ -m unequal -b 1```
+    
+    This will create a new directory `~/ChIP-Seq/files/re-mix` with files `Treatment.bootstrap_1.bed` and `Control.bootstrap_1.bed`
+    
+1.  Analyze "original" files with MACS:
+
+    ```macs2 callpeak -t Treatment.bed -c Control.bed --nomodel -p 0.1 -n Analysis --outdir ~/ChIP-Seq/analysis/```
+    
+    This will create several files including ```Analysis_peaks.xls```
+    
+1.  Analyze "re-mixed" files with MACS:
+
+    ```macs2 callpeak -t Treatment.bootstrap_1.bed -c Control.bootstrap_1.bed --nomodel -p 0.00001 -n Analysis.bootstrap_1 -- outdir ~/ChIP-Seq/analysis/```
+    
+    This will create several files including ```Analysis.bootstrap_1_peaks.xls```
+    
+1.  Convert the MACS summary files to .txt extension. One way of doing that on the command line is:
+
+    ```for file in *.xls; do```
+    
+      ```mv "$file" "`basename "$file" .xls`.txt"```
+      
+    ```done```
+
+1.  Recalibrate the *p*-values:
+
+    ```perl RECAP.pl --dirOrig ~/ChIP-Seq/analysis/ --nameOrig Analysis_peaks.txt --dirRemix ~/ChIP-Seq/analysis --nameRemix Analysis.bootstrap_1_peaks.txt --dirOutput ~/ChIP-Seq/analysis/ Analysis.RECAP.bootstrap_1.txt --header 28 --pvalCol 7 --delim t --MACS y```
+    
+    There are generally 28 header lines in the MACS summary file. The 7th column contains the *p*-values. The output file `Analysis.RECAP.bootstrap_1.txt` will retain the same header as the original summary file but contain a new column of recalibrated *p*-values.
