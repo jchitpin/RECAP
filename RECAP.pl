@@ -1,4 +1,4 @@
-#!/bin/perl
+#!/usr/bin/perl
 # ==================================================================
 # RECAP Re-Mix
 # RECAP is a wrapper algorithm that resamples ChIP-seq and control
@@ -35,8 +35,8 @@ our $version = "1.0.1";
 use warnings;
 use strict;
 use Getopt::Long;
-use List::MoreUtils qw(first_index);
 use Term::ANSIColor qw(:constants);
+use List::BinarySearch qw(binsearch_pos);
 use autodie;
 $| = 1;
 # ==================================================================
@@ -208,11 +208,10 @@ print "Check!\n";
 # RECAP algorithm
 print "Beginning RECAP procedure\n";
 print "This may take some time...\n";
+
+# Implementing RECAP algorithm with binary search
 for my $idx ( 0 .. $#pvalOrig ) {
-  $matching = first_index { $_ > $pvalOrig[$idx] } @sorted_pvalRemix;
-  if ( $matching == -1 ) {
-    $matching = 0;
-  }
+  $matching = binsearch_pos { $a <=> $b} $pvalOrig[$idx], @sorted_pvalRemix;
   $RECAP[$idx] = $matching / scalar @sorted_pvalRemix;
 }
 
@@ -233,8 +232,7 @@ push @fileHeader, "\tRECAP\n";
 print $export join "", @fileHeader;
 }
 
-
-
+# Add column of recalibrated p-values to input, original summary file
 chdir($dirOutput);
 for my $idx ( 0 .. $#fileOriginal ) {
   @columnsOriginal = split(/$delim/, "$fileOriginal[$idx]");
@@ -242,7 +240,6 @@ for my $idx ( 0 .. $#fileOriginal ) {
   push @columnsOriginal, $RECAP[$idx], "\n";
   print $export join "\t", @columnsOriginal;
 }
-#print $export join "\n", @RECAP;
 close $export;
 print "Check!\n";
 
