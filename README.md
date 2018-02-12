@@ -60,6 +60,10 @@ Choose either *(c)omma* or *(t)ab* delimiters depending on the output of your pe
 **--MACS**
 Choose either *(y)es* or *(n)o* if the peak caller used is MACS. Choosing *yes* antilogs the *p*-values, a necessary step during *p*-value recalibration with RECAP.
 
+### Notes
+
+The re-mixing process takes minutes to perform. Recalibrating the *p*-values with the Perl script should take seconds.
+
 ### Example Workflow
 
 Suppose we are interested in analyzing a treatment and control file with MACS and recalibrating the resulting *p*-values.
