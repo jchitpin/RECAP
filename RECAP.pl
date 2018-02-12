@@ -12,6 +12,7 @@
 # HISTORY:
 #   02/01/2018 - v1.0.0 - First Creation
 #   02/08/2018 - v1.0.1 - Outputs header and new column for RECAP p-values
+#	02/12/2018 - v1.0.2 - Binary search instead of first index search
 #
 # CREDITS:
 # RECAP was developed by Justin G. Chitpin and Theodore J. Perkins.
@@ -29,7 +30,7 @@
 
 # ==================================================================
 # Version
-our $version = "1.0.1";
+our $version = "1.0.2";
 
 # Modules
 use warnings;
