@@ -58,6 +58,7 @@ my @pvalRemix;
 my $matching;
 my @RECAP;
 my @fileHeader;
+my $delimOutput;
 
 # Arguments
 GetOptions(
@@ -117,12 +118,16 @@ print "MACS file type? : $MACS\n";
 # Input validation
 if ( ! -d $dirOriginal ) {
   die "ERROR: Directory of original file does not exist\n";
-} elsif ( ! -e $nameOriginal ) {
+}
+chdir $dirOriginal;
+if ( ! -e $nameOriginal ) {
   die "ERROR: Original file does not exist\n";
 }
 if ( ! -d $dirRemix ) {
   die "ERROR: Directory of re-mixed file does not exist\n";
-} elsif ( ! -e $nameRemix ) {
+}
+chdir $dirRemix;
+if ( ! -e $nameRemix ) {
   die "ERROR: Re-mixed file does not exist\n";
 }
 if ( ! -d $dirOutput ) {
@@ -144,8 +149,10 @@ if ( $delim =~ /[^ct]/ ) {
 } else {
   if ( $delim eq "c" ) {
     $delim = qr/,/;
+    $delimOutput = ",";
   } elsif ( $delim eq "t" ) {
     $delim = qr/\t/;
+    $delimOutput = "\t";
   }
 }
 
@@ -228,7 +235,7 @@ if ($header != 0) {
     next unless $. <= $header;
     push @fileHeader, $_;
   }
-chomp(@fileHeader[$header-1]);
+chomp($fileHeader[$header-1]); ####EDITED @ -> $
 push @fileHeader, "\tRECAP\n";
 print $export join "", @fileHeader;
 }
@@ -239,7 +246,8 @@ for my $idx ( 0 .. $#fileOriginal ) {
   @columnsOriginal = split(/$delim/, "$fileOriginal[$idx]");
   chomp(@columnsOriginal);
   push @columnsOriginal, $RECAP[$idx], "\n";
-  print $export join "\t", @columnsOriginal;
+  #print $export join "\t", @columnsOriginal;
+  print $export join $delimOutput, @columnsOriginal;
 }
 close $export;
 print "Check!\n";
@@ -248,3 +256,4 @@ print "Check!\n";
 my $end_run = time();
 my $run_time = $end_run - our $start_run;
 print "Job took $run_time seconds\n";
+
