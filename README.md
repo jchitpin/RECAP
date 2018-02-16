@@ -8,7 +8,9 @@ Download RECAP and extract to your desired directory. There should be two script
 1.  RECAP_Re-Mix.sh
 1.  RECAP.pl
 
-Both scripts should be runnable on any system with Bash and Perl installed with no extra CPAN modules required.
+Both scripts should be runnable on any system with Bash and Perl installed. Only one external CPAN module is required. To install it:
+* cpan
+* install List::BinarySearch
 
 ## Usage
 
@@ -55,7 +57,7 @@ Argument | Description
 ### Options(\*)
 
 **--delim**
-Choose either *(c)omma* or *(t)ab* delimiters depending on the output of your peak caller. **NOTE: Version 1.0.1 cannot handle .xls files. Please convert them to .txt for RECAP.pl to work.**
+Choose either *(c)omma* or *(t)ab* delimiters depending on the output of your peak caller. **NOTE: Version 1.0.2 cannot handle .xls files. Please convert them to .txt for RECAP.pl to work.**
 
 **--MACS**
 Choose either *(y)es* or *(n)o* if the peak caller used is MACS. Choosing *yes* antilogs the *p*-values, a necessary step during *p*-value recalibration with RECAP.
