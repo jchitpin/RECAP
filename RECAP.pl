@@ -71,7 +71,7 @@ GetOptions(
   'header=i'     => \my $header,
   'pvalCol=i'    => \my $pvalCol,
   'delim=s'      => \my $delim,
-  'MACS=s'       => \my $MACS,
+  'software=s'   => \my $software,
   'help'         => \my $help,
 ) or die "ERROR: Invalid options passed to $0\n";
 
@@ -84,7 +84,8 @@ if ( $help || ! defined $dirOriginal
            || ! defined $nameRemix
            || ! defined $header
            || ! defined $pvalCol
-           || ! defined $delim) {
+           || ! defined $delim
+           || ! defined $software) {
   print BOLD, "  USAGE:\n", RESET;
   print "  --dirOrig\tOriginal file directory\n";
   print "  --nameOrig\tOriginal file name\n";
@@ -95,7 +96,7 @@ if ( $help || ! defined $dirOriginal
   print "  --header\tHeader lines in files\n";
   print "  --pvalCol\tColumn containing p-values\n";
   print "  --delim\tDelimiter type of file (t)ab or (c)omma\n";
-  print "  --MACS\tMACS summary file? (y)es or (n)o\n";
+  print "  --software\tPeak caller (M)ACS2 or (D)iffReps or (O)ther\n";
   print "  --help\tDisplay this help and exit\n";
   exit;
 }
@@ -113,7 +114,7 @@ print "Output file name: $nameOutput\n";
 print "Header number   : $header\n";
 print "p-value column  : $pvalCol\n";
 print "Delimiter type  : $delim\n";
-print "MACS file type? : $MACS\n";
+print "Peak caller type: $software\n";
 
 # Input validation
 if ( ! -d $dirOriginal ) {
@@ -156,9 +157,9 @@ if ( $delim =~ /[^ct]/ ) {
   }
 }
 
-$MACS = lc $MACS;
-if ( $MACS =~ /[^yn]/ ) {
-  die "ERROR: Specify 'y' for MACS or 'n' otherwise\n";
+$software = uc $software;
+if ( $software =~ /[^MDO]/ ) {
+  die "ERROR: Specify 'M' for MACS, 'D' for diffReps, 'O' for other\n";
 }
 
 # Reading original summary file
@@ -184,13 +185,19 @@ while(<$importRemix>) {
 close $importRemix;
 print "Check!\n";
 
+# Removing downregulated p-values if diffReps summary file
+if ( $software eq "D" ) {
+  print "Filtering off downregulated diffReps p-values from original/re-mixed files\n";
+  @fileOriginal = grep( /Up/, @fileOriginal );
+  @fileRemix = grep( /Up/, @fileRemix );
+}
 
 # Extracting p-value columns from summary files
 # Exponentiate p-values if MACS summary files
 print "Scanning p-value column of original file\n";
 foreach my $line (@fileOriginal) {
   @columnsOriginal = split(/$delim/, "$line");
-  if ( $MACS eq "y" ) {
+  if ( $software eq "M" ) {
     push @pvalOrig, 10**-($columnsOriginal[$pvalCol]);
   } else {
     push @pvalOrig, $columnsOriginal[$pvalCol];
@@ -200,7 +207,7 @@ print "Check!\n";
 print "Scanning p-value column of re-mixed file\n";
 foreach my $line (@fileRemix) {
   @columnsRemix = split(/$delim/, "$line");
-  if ( $MACS eq "y" ) {
+  if ( $software eq "M" ) {
     push @pvalRemix, 10**-($columnsRemix[$pvalCol]);
   } else {
     push @pvalRemix, $columnsRemix[$pvalCol];
@@ -256,4 +263,3 @@ print "Check!\n";
 my $end_run = time();
 my $run_time = $end_run - our $start_run;
 print "Job took $run_time seconds\n";
-
