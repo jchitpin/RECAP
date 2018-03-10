@@ -52,15 +52,15 @@ Argument | Description
 --header | Number of header lines in peak calling summary file
 --pvalCol | Column number containing *p*-values in summary file
 --delim | Delimiter type*
---MACS | Whether peak calling summary file belongs to MACS*
+--software | Type of peak caller used
 
 ### Options(\*)
 
 **--delim**
 Choose either *(c)omma* or *(t)ab* delimiters depending on the output of your peak caller. **NOTE: Version 1.0.2 cannot handle .xls files. Please convert them to .txt for RECAP.pl to work.**
 
-**--MACS**
-Choose either *(y)es* or *(n)o* if the peak caller used is MACS. Choosing *yes* antilogs the *p*-values, a necessary step during *p*-value recalibration with RECAP.
+**--software**
+Choose either *(M)ACS* for MACS2, or *(D)iffReps* for diffReps, or *(O)ther* for another type of peak caller. Choosing *M* antilogs the *p*-values, a necessary step during *p*-value recalibration with RECAP. Choosing 'D' filters off any downregulated p-values, another necessary step during *p*-value recalibration with RECAP.
 
 ### Notes
 
@@ -94,6 +94,6 @@ Suppose we are interested in analyzing a treatment and control file with MACS an
 
 1.  Recalibrate the *p*-values:
 
-    ```perl RECAP.pl --dirOrig ~/ChIP-Seq/analysis/ --nameOrig Analysis_peaks.txt --dirRemix ~/ChIP-Seq/analysis --nameRemix Analysis.bootstrap_1_peaks.txt --dirOutput ~/ChIP-Seq/analysis/ Analysis.RECAP.bootstrap_1.txt --header 28 --pvalCol 7 --delim t --MACS y```
+    ```perl RECAP.pl --dirOrig ~/ChIP-Seq/analysis/ --nameOrig Analysis_peaks.txt --dirRemix ~/ChIP-Seq/analysis --nameRemix Analysis.bootstrap_1_peaks.txt --dirOutput ~/ChIP-Seq/analysis/ --nameOutput Analysis.RECAP.bootstrap_1.txt --header 28 --pvalCol 7 --delim t --software M```
     
     There are generally 28 header lines in the MACS summary file. The 7th column contains the *p*-values. The output file `Analysis.RECAP.bootstrap_1.txt` will retain the same header as the original summary file but contain a new column of recalibrated *p*-values.
