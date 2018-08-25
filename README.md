@@ -61,7 +61,7 @@ Argument | Description
 ### Options(\*)
 
 **--bootstrap**
-Ensure that the re-mixed peak calling file end in '.boostrap_#.bed. Replace '#' with the bootstrap number.
+Ensure that the re-mixed peak calling file ends in '.boostrap_#.bed. Replace '#' with the bootstrap number.
 
 **--delim**
 Choose either *(c)omma* or *(t)ab* delimiters depending on the output of your peak caller.
