@@ -1,6 +1,6 @@
 ## Introduction
 
-ChIP-seq is used extensively to identify sites of transcription factor binding or regions of epigenetic modifications to the genome. While many programs have been designed to analyze ChIP-seq data, nearly all fall into the statistical trap of using the data twice--once to determine candidate enriched regions, and a second time to assess enrichment by methods of classical statistical hypothesis testing. This double use of the data has the potential to invalidate the statistical significance assigned to enriched regions, or "peaks", and as a consequence, to invalidate false discovery rate estimates. Thus, the true significance or reliability of peak calls remains unknown. We propose a new wrapper algorithm called RECAP, that uses resampling of ChIP-seq and control data to estimate and correct for biases built into peak calling algorithms. RECAP is a powerful new tool for assessing the true statistical significance of ChIP-seq peak calls.
+ChIP-seq is used extensively to identify sites of transcription factor binding or regions of epigenetic modifications to the genome. The fundamental bioinformatics problem is to take ChIP-se read data and data representing some kind of control, and determine genomic regions that are enriched in the ChIP-se versus the control, also called "peak calling." While many programs have been designed to solve this task, nearly all fall into the statistical trap of using the data twice--once to determine candidate enriched regions, and a second time to assess enrichment by methods of classical statistical hypothesis testing. This double use of the data has the potential to invalidate the statistical significance assigned to enriched regions, or "peaks", and as a consequence, to invalidate false discovery rate estimates. Thus, the true significance or reliability of peak calls remains unknown. We propose a new wrapper algorithm, RECAP, that uses resampling of ChIP-seq and control data to estimate and correct for biases built into peak calling algorithms. RECAP is a powerful new tool for assessing the true statistical significance of ChIP-seq peak calls.
 
 ## Installation
 
@@ -8,9 +8,11 @@ Download RECAP and extract to your desired directory. There should be two script
 1.  RECAP_Re-Mix.sh
 1.  RECAP.pl
 
-Both scripts should be runnable on any system with Bash and Perl installed. Only one external CPAN module is required. To install it:
+Both scripts should be runnable on any system with Bash and Perl installed. Several CPAN modules are required. To install them:
 * cpan
 * install List::BinarySearch
+* install List::Util
+* install List::Utils
 
 ## Usage
 
@@ -36,9 +38,9 @@ Choose either *equal* or *unequal*. *Equal* distributes the treatment and contro
 *Bootstrap* is the number of times the treatment and control files are re-mixed to generate re-mixed BED files.
 
 ```
-perl RECAP.pl [--dirOrig] [--nameOrig] [--dirRemix] [--nameRemix] 
-              [--dirOutput] [--nameOutput] [--header] [--pvalCol] 
-              [--delim] [--MACS] 
+perl RECAP.pl [--dirOrig]   [--nameOrig]   [--dirRemix] [--nameRemix] 
+              [--dirOutput] [--nameOutput] [bootstrap]  [--header] 
+              [--pvalCol]   [--delim]      [--software] [--help] 
 ```
 
 Argument | Description
@@ -46,25 +48,30 @@ Argument | Description
 --dirOrig | Input original peak calling summary file directory
 --nameOrig | Original peak calling summary file
 --dirRemix | Input re-mixed peak calling summary file directory
---nameRemix | Re-mixed peak calling summary file
+--nameRemix | Re-mixed peak calling summary file name ending in '.bootstrap_#.bed
 --dirOutput | Output directory
 --nameOutput | Original peak calling summary file with RECAP 
+--bootstrap | Number of re-mixing procedures*
 --header | Number of header lines in peak calling summary file
 --pvalCol | Column number containing *p*-values in summary file
 --delim | Delimiter type*
---software | Type of peak caller used
+--software | Type of peak caller used*
+-- help | Display this help and exit
 
 ### Options(\*)
 
+**--bootstrap**
+Ensure that the re-mixed peak calling file end in '.boostrap_#.bed. Replace '#' with the bootstrap number.
+
 **--delim**
-Choose either *(c)omma* or *(t)ab* delimiters depending on the output of your peak caller. **NOTE: Version 1.0.2 cannot handle .xls files. Please convert them to .txt for RECAP.pl to work.**
+Choose either *(c)omma* or *(t)ab* delimiters depending on the output of your peak caller.
 
 **--software**
-Choose either *(M)ACS* for MACS2, or *(D)iffReps* for diffReps, or *(O)ther* for another type of peak caller. Choosing *M* antilogs the *p*-values, a necessary step during *p*-value recalibration with RECAP. Choosing 'D' filters off any downregulated p-values, another necessary step during *p*-value recalibration with RECAP.
+Choose either *(M)ACS* for MACS2, or *(D)iffReps* for diffReps, or *(O)ther* for another type of peak caller. Choosing *M* negative antilogs the *p*-values, a necessary step during *p*-value recalibration with RECAP. Choosing 'D' filters off any downregulated p-values, a special feature of diffReps that must be removed during *p*-value recalibration with RECAP.
 
 ### Notes
 
-The re-mixing process takes minutes to perform. Recalibrating the *p*-values with the Perl script should take seconds.
+The re-mixing process takes minutes to perform. Recalibrating the *p*-values with the Perl script should take seconds to minutes.
 
 ### Example Workflow
 
@@ -88,12 +95,14 @@ Suppose we are interested in analyzing a treatment and control file with MACS an
     
     This will create several files including ```Analysis.bootstrap_1_peaks.xls```
     
+<!---
 1.  Convert the MACS summary files to .txt extension. One way of converting all .xls files in a directory to .txt on the command line is:
 
     ```for file in *.xls; do mv "$file" "`basename "$file" .xls`.txt"; done```
+-->
 
 1.  Recalibrate the *p*-values:
 
-    ```perl RECAP.pl --dirOrig ~/ChIP-Seq/analysis/ --nameOrig Analysis_peaks.txt --dirRemix ~/ChIP-Seq/analysis --nameRemix Analysis.bootstrap_1_peaks.txt --dirOutput ~/ChIP-Seq/analysis/ --nameOutput Analysis.RECAP.bootstrap_1.txt --header 28 --pvalCol 7 --delim t --software M```
+    ```perl RECAP.pl --dirOrig ~/ChIP-Seq/analysis/ --nameOrig Analysis_peaks.txt --dirRemix ~/ChIP-Seq/analysis --nameRemix Analysis.bootstrap_1_peaks.txt --dirOutput ~/ChIP-Seq/analysis/ --nameOutput Analysis.RECAP.bootstrap_1.txt --bootstrap 1 --header 28 --pvalCol 7 --delim t --software M```
     
-    There are generally 28 header lines in the MACS summary file. The 7th column contains the *p*-values. The output file `Analysis.RECAP.bootstrap_1.txt` will retain the same header as the original summary file but contain a new column of recalibrated *p*-values.
+    There are generally 28 header lines in the MACS summary file. The 7th column contains the *p*-values. The output file `Analysis.RECAP.bootstrap_1.txt` will retain the same header as the original summary file but contain a new column of recalibrated *p*-values and FDR-adjusted recalibrated *p*-values.
