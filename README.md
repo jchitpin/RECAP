@@ -95,12 +95,6 @@ Suppose we are interested in analyzing a treatment and control file with MACS an
     
     This will create several files including ```Analysis.bootstrap_1_peaks.xls```
     
-<!---
-1.  Convert the MACS summary files to .txt extension. One way of converting all .xls files in a directory to .txt on the command line is:
-
-    ```for file in *.xls; do mv "$file" "`basename "$file" .xls`.txt"; done```
--->
-
 1.  Recalibrate the *p*-values:
 
     ```perl RECAP.pl --dirOrig ~/ChIP-Seq/analysis/ --nameOrig Analysis_peaks.xls --dirRemix ~/ChIP-Seq/analysis --nameRemix Analysis.bootstrap_1_peaks.xls --dirOutput ~/ChIP-Seq/analysis/ --nameOutput Analysis.RECAP.bootstrap_1.txt --bootstrap 1 --header 28 --pvalCol 7 --delim t --software M```
