@@ -12,7 +12,7 @@ Both scripts should be runnable on any system with Bash and Perl installed. Seve
 * cpan
 * install List::BinarySearch
 * install List::Util
-* install List::Utils
+* install Math::Utils
 
 ## Usage
 
@@ -89,9 +89,9 @@ Suppose we are interested in analyzing a treatment and control file with MACS an
     
     This will create several files including ```Analysis_peaks.xls```
     
-1.  Analyze "re-mixed" files with MACS:
+1.  Analyze "re-mixed" files with MACS (please use *p*=0.1 for MACS and *p*=0.99 for SICER/diffReps):
 
-    ```macs2 callpeak -t Treatment.bootstrap_1.bed -c Control.bootstrap_1.bed --nomodel -p 0.00001 -n Analysis.bootstrap_1 -- outdir ~/ChIP-Seq/analysis/```
+    ```macs2 callpeak -t Treatment.bootstrap_1.bed -c Control.bootstrap_1.bed --nomodel -p 0.1 -n Analysis.bootstrap_1 --outdir ~/ChIP-Seq/analysis/```
     
     This will create several files including ```Analysis.bootstrap_1_peaks.xls```
     
@@ -103,6 +103,6 @@ Suppose we are interested in analyzing a treatment and control file with MACS an
 
 1.  Recalibrate the *p*-values:
 
-    ```perl RECAP.pl --dirOrig ~/ChIP-Seq/analysis/ --nameOrig Analysis_peaks.txt --dirRemix ~/ChIP-Seq/analysis --nameRemix Analysis.bootstrap_1_peaks.txt --dirOutput ~/ChIP-Seq/analysis/ --nameOutput Analysis.RECAP.bootstrap_1.txt --bootstrap 1 --header 28 --pvalCol 7 --delim t --software M```
+    ```perl RECAP.pl --dirOrig ~/ChIP-Seq/analysis/ --nameOrig Analysis_peaks.xls --dirRemix ~/ChIP-Seq/analysis --nameRemix Analysis.bootstrap_1_peaks.xls --dirOutput ~/ChIP-Seq/analysis/ --nameOutput Analysis.RECAP.bootstrap_1.txt --bootstrap 1 --header 28 --pvalCol 7 --delim t --software M```
     
     There are generally 28 header lines in the MACS summary file. The 7th column contains the *p*-values. The output file `Analysis.RECAP.bootstrap_1.txt` will retain the same header as the original summary file but contain a new column of recalibrated *p*-values and FDR-adjusted recalibrated *p*-values.
