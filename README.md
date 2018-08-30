@@ -79,13 +79,13 @@ Suppose we are interested in analyzing a treatment and control file with MACS an
 
 1. Open RECAP_MACS.sh.
 
-2. Fill out the following 6 parameters:
-  a) **INPUT_DIR**: The ChIP/Control directory
-  b) **CHIP_NAME**: Name of the ChIP bed file
-  c) **CONTROL_NAME**: Name of the control bed file
-  d) **OUTPUT_DIR**: Output directory for subsequent peak calling and RECAP analyses
-  e) **BOOTSTRAP**: Number of RECAP re-mixes. (Default=1)
-  f) **HEADER**: Number of header lines in the peak calling summary file (Default=29 for MACS)
+2. Fill out the following 6 parameters:  
+  a) **INPUT_DIR**: The ChIP/Control directory  
+  b) **CHIP_NAME**: Name of the ChIP bed file  
+  c) **CONTROL_NAME**: Name of the control bed file  
+  d) **OUTPUT_DIR**: Output directory for subsequent peak calling and RECAP analyses  
+  e) **BOOTSTRAP**: Number of RECAP re-mixes. (Default=1)  
+  f) **HEADER**: Number of header lines in the peak calling summary file (Default=29 for MACS)  
 
 3. Run RECAP_MACS.sh.
 ```bash RECAP_MACS.sh```
