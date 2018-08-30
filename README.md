@@ -73,7 +73,21 @@ Choose either *(M)ACS* for MACS2, or *(D)iffReps* for diffReps, or *(O)ther* for
 
 The re-mixing process takes minutes to perform. Recalibrating the *p*-values with the Perl script should take seconds to minutes.
 
-### Example Workflow
+### Example (Automated) Workflow
+
+Suppose we are interested in analyzing a treatment and control file with MACS and recalibrating the resulting *p*-values.
+
+1. Open RECAP_MACS.sh
+
+1. Fill out the following 5 parameters:
+  * **INPUT_DIR**: The ChIP/Control directory
+  * **CHIP_NAME**: Name of the ChIP bed file
+  * **CONTROL_NAME**: Name of the control bed file
+  * **OUTPUT_DIR**: Output directory for subsequent peak calling and RECAP analyses
+  * **BOOTSTRAP**: Number of RECAP re-mixes. (Default=1)
+  * **HEADER**: Number of header lines in the peak calling summary file (Default=29 for MACS)
+
+### Example (Manual) Workflow
 
 Suppose we are interested in analyzing a treatment and control file with MACS and recalibrating the resulting *p*-values.
 
@@ -87,16 +101,16 @@ Suppose we are interested in analyzing a treatment and control file with MACS an
 
     ```macs2 callpeak -t Treatment.bed -c Control.bed --nomodel -p 0.1 -n Analysis --outdir ~/ChIP-Seq/analysis/```
     
-    This will create several files including ```Analysis_peaks.xls```. **NOTE:** Please retain only the ```_peaks.xls``` file which is to be recalibrated.
+    This will create several files including ```Treatment_peaks.xls```. **NOTE:** Please retain only the ```_peaks.xls``` file which is to be recalibrated.
     
 1.  Analyze "re-mixed" files with MACS (please use *p*=0.1 for MACS and *p*=0.99 for SICER/diffReps):
 
-    ```macs2 callpeak -t Treatment.bootstrap_1.bed -c Control.bootstrap_1.bed --nomodel -p 0.1 -n Analysis.bootstrap_1 --outdir ~/ChIP-Seq/analysis/```
+    ```macs2 callpeak -t Treatment.bootstrap_1.bed -c Control.bootstrap_1.bed --nomodel -p 0.1 -n Treatment.bootstrap_1 --outdir ~/ChIP-Seq/analysis/```
     
-    This will create several files including ```Analysis.bootstrap_1_peaks.xls```. Please retain only the ```_peaks.xls``` file which is to be recalibrated.
+    This will create several files including ```Treatment.bootstrap_1_peaks.xls```. Please retain only the ```_peaks.xls``` file which is to be recalibrated.
     
 1.  Recalibrate the *p*-values:
 
-    ```perl RECAP.pl --dirOrig ~/ChIP-Seq/analysis/ --nameOrig Analysis_peaks.xls --dirRemix ~/ChIP-Seq/analysis --nameRemix Analysis --dirOutput ~/ChIP-Seq/analysis/ --nameOutput Analysis.RECAP.bootstrap_1.txt --bootstrap 1 --header 28 --pvalCol 7 --delim t --software M```
+    ```perl RECAP.pl --dirOrig ~/ChIP-Seq/analysis/ --nameOrig Treatment_peaks.xls --dirRemix ~/ChIP-Seq/analysis --nameRemix Treatment --dirOutput ~/ChIP-Seq/analysis/ --nameOutput Treatment.RECAP.bootstrap_1.txt --bootstrap 1 --header 28 --pvalCol 7 --delim t --software M```
     
     **NOTE:** There are generally 29 header lines in the MACS summary file (28 if using --nomodel). The 7th column contains the *p*-values. The output file `Analysis.RECAP.bootstrap_1.txt` will retain the same header as the original summary file but contain a new column of recalibrated *p*-values and FDR-adjusted recalibrated *p*-values.
