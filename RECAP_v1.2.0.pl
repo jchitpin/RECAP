@@ -342,7 +342,6 @@ push @joinP, @duplicates;
 # The 'third' column of @joinP will be FDR updated below
 @RECAP = map $_->[2], @joinP;
 
-
 ## Benjamini-Hochberg adjustment of RECAP p-values
 print "FDR-adjusting RECAP p-values\n";
 
