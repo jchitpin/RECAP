@@ -329,7 +329,6 @@ my @duplicates;
 	my @y = map $_->[2], @joinP;
 	for my $i ( 0 .. $#duplicates ) {
 		my($l_y, $l_dy) = linear_interpolate($duplicates[$i][1], \@x, \@y);
-		print("$duplicates[$i][1], $l_y\n");
 		$duplicates[$i][2] = $l_y;
 	}
 }
