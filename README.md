@@ -74,7 +74,7 @@ Choose either *(M)ACS* for MACS2, or *(D)iffReps* for diffReps, or *(O)ther* for
 
 The re-mixing process takes minutes to perform. Recalibrating the *p*-values with the Perl script should take seconds to minutes.
 
-### Example Workflow
+### Example Workflow using Wrapper Scripts
 
 Suppose we are interested in analyzing a treatment and control file with MACS and recalibrating the resulting *p*-values.
 
