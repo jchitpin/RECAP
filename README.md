@@ -64,9 +64,6 @@ Argument | Description
 
 ### Options(\*)
 
-**--bootstrap**
-Ensure that the re-mixed peak calling file ends in '.boostrap_#.bed. Replace '#' with the bootstrap number.
-
 **--delim**
 Choose either *(c)omma* or *(t)ab* delimiters depending on the output of your peak caller.
 
@@ -91,13 +88,8 @@ Suppose we are interested in analyzing a treatment and control file with MACS an
   * **BOOTSTRAP**: Number of RECAP re-mixes. (Default=1)  
   * **HEADER**: Number of header lines in the peak calling summary file (Default=29 for MACS)  
 
-3. Run RECAP_MACS.sh.
+3. Insert any additional MACS parameters and run RECAP_MACS.sh.
 ```bash RECAP_MACS.sh```
-
-### Automated Workflow
-
-Please check out RECAP_MACS.sh,RECAP_SICER.sh, and RECAP_diffReps.sh for a wrapper script to automate peak calling, ChIP-vs-Control re-mixing, and p-value recalibration. Directory and file names must be edited directly in the wrapper scripts as well as any special peak calling parameters for MACS/SICER/diffReps.
-
 
 ### Example (Manual) Workflow
 
