@@ -52,7 +52,7 @@ Argument | Description
 --dirOrig | Input original peak calling summary file directory
 --nameOrig | Original peak calling summary file
 --dirRemix | Input re-mixed peak calling summary file directory
---nameRemix | Re-mixed peak calling summary file
+--nameRemix | Re-mixed peak calling summary file ending in '.bootstrap_#.bed
 --dirOutput | Output directory
 --nameOutput | Original peak calling summary file with RECAP 
 --bootstrap | Number of re-mixing procedures*
@@ -63,6 +63,9 @@ Argument | Description
 -- help | Display this help and exit
 
 ### Options(\*)
+
+**--bootstrap**
+Ensure that the re-mixed peak calling file ends in '.boostrap_#.bed. Replace '#' with the bootstrap number.
 
 **--delim**
 Choose either *(c)omma* or *(t)ab* delimiters depending on the output of your peak caller.
@@ -109,7 +112,7 @@ Suppose we are interested in analyzing a treatment and control file with MACS an
     
 1.  Analyze "re-mixed" files with MACS (please use *p*=0.1 for MACS and *p*=0.99 for SICER/diffReps):
 
-    ```macs2 callpeak -t Treatment.bootstrap_1.bed -c Control.bootstrap_1.bed --nomodel -p 0.1 -n Treatment.bootstrap_1 --outdir ~/ChIP-Seq/analysis/```
+    ```macs2 callpeak -t Treatment.bootstrap_1.bed -c Control --nomodel -p 0.1 -n Treatment.bootstrap_1 --outdir ~/ChIP-Seq/analysis/```
     
     This will create several files including ```Treatment.bootstrap_1_peaks.xls```. Please retain only the ```_peaks.xls``` file which is to be recalibrated.
     
