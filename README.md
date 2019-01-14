@@ -15,6 +15,7 @@ Both scripts should be runnable on any system with Bash and Perl installed. Seve
 * cpan
 * install List::BinarySearch
 * install List::Util
+* install List::MoreUtils
 * install Math::Utils
 
 ## Usage
@@ -51,7 +52,7 @@ Argument | Description
 --dirOrig | Input original peak calling summary file directory
 --nameOrig | Original peak calling summary file
 --dirRemix | Input re-mixed peak calling summary file directory
---nameRemix | Re-mixed peak calling summary file name ending in '.bootstrap_#.bed
+--nameRemix | Re-mixed peak calling summary file
 --dirOutput | Output directory
 --nameOutput | Original peak calling summary file with RECAP 
 --bootstrap | Number of re-mixing procedures*
@@ -76,7 +77,7 @@ Choose either *(M)ACS* for MACS2, or *(D)iffReps* for diffReps, or *(O)ther* for
 
 The re-mixing process takes minutes to perform. Recalibrating the *p*-values with the Perl script should take seconds to minutes.
 
-### Example (Automated) Workflow
+### Example Workflow
 
 Suppose we are interested in analyzing a treatment and control file with MACS and recalibrating the resulting *p*-values.
 
@@ -92,6 +93,11 @@ Suppose we are interested in analyzing a treatment and control file with MACS an
 
 3. Run RECAP_MACS.sh.
 ```bash RECAP_MACS.sh```
+
+### Automated Workflow
+
+Please check out RECAP_MACS.sh,RECAP_SICER.sh, and RECAP_diffReps.sh for a wrapper script to automate peak calling, ChIP-vs-Control re-mixing, and p-value recalibration. Directory and file names must be edited directly in the wrapper scripts as well as any special peak calling parameters for MACS/SICER/diffReps.
+
 
 ### Example (Manual) Workflow
 
