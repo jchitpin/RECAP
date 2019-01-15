@@ -1,5 +1,5 @@
 Please see <https://github.com/theodorejperkins/RECAP> for the latest stable build.  
-Nightly or bleeding edge builds will be posted here (none currently).
+Bleeding edge builds will be posted here (none currently).
 
 ## Introduction
 
@@ -81,18 +81,10 @@ The re-mixing process takes minutes to perform. Recalibrating the *p*-values wit
 
 Suppose we are interested in analyzing a treatment and control file with MACS and recalibrating the resulting *p*-values.
 
-1. Open RECAP_MACS.sh.
+1. Open RECAP_MACS.sh and modify any peak-calling preferences *except* the p-value threshold
 
-2. Fill out the following 6 parameters:  
-  * **INPUT_DIR**: The ChIP/Control directory  
-  * **CHIP_NAME**: Name of the ChIP bed file  
-  * **CONTROL_NAME**: Name of the control bed file  
-  * **OUTPUT_DIR**: Output directory for subsequent peak calling and RECAP analyses  
-  * **BOOTSTRAP**: Number of RECAP re-mixes. (Default=1)  
-  * **HEADER**: Number of header lines in the peak calling summary file (Default=29 for MACS)  
-
-3. Insert any additional MACS parameters and run RECAP_MACS.sh.
-```bash RECAP_MACS.sh```
+2. Run the script in your terminal.
+   ```bash RECAP_MACS.sh -i input_directory -t treatment_file -c control_file -o output_directory -b bootstrap_number -e header_lines_in_output_file   ```
 
 ### Example (Manual) Workflow
 
