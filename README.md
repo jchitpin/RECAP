@@ -33,6 +33,7 @@ Argument | Description
 -e, --header | Header number of peak calling output files
 -h, --help | Display this help and exit
 
+From our simulated and ENCODE tests, we found RECAP-recalibrated MACS to yield the best peak calling results for ChIP-vs-Control data sets targeting sharp peaks from transcription factors. We would recommend using the SICER wrapper script for analyzing broad peaks from histone modifications. For differential ChIP-seq analysis between biological replicates, we would recommend using our diffeps wrapper script although RECAP has a minimal effect on correcting the p-values.
 
 ### MACS
 
@@ -72,6 +73,9 @@ Suppose we are interested in analyzing a treatment and control file with diffRep
    
 3. Check the output directory to find the re-mixed bed files in ```re-mix```, original peak calling output files in ```diffReps_original```, re-mixed peak calling output files in ```diffReps_re-mix```, and the final RECAP-recalibrated output files in ```diffReps_RECAP```.
 
+### A different peak caller
+
+Any peak caller can work with ```RECAP.pl``` as long as it uses a p-value cut-off to identify significant peaks. One of the wrapper scripts above would have to be altered by replacing the peak caller and parameters with your desired one. The number of header lines in the output file would have to be changed too. Finally, the RECAP.pl arguments ```software``` and ```delim``` would need to be set to ```O``` for other and either ```t``` for tab or ```c``` for comma.
 
 ## Usage
 
