@@ -141,7 +141,7 @@ The re-mixing process takes minutes to perform. Recalibrating the *p*-values wit
 
 ### Example (Manual) Workflow
 
-Suppose we are interested in analyzing a treatment and control file with MACS and recalibrating the resulting *p*-values.
+The lines of code below can be adapted for any peak caller that produces *p*-values and are similar in principle to the codes in our MACS/SICER/diffReps wrapper scripts. If you'd like to create your own wrapper script for another peak caller, please adapt the following code:
 
 1.  Re-mix treatment and control BED files: 
 
@@ -174,4 +174,4 @@ Suppose we are interested in analyzing a treatment and control file with MACS an
     
     This will create a file in ```~/ChIP-Seq/analysis/``` called ```Treatment.RECAP.bootstrap_1.txt```. The output will look the same as ```Analysis_Original_peaks.xls``` but with two extra columns of RECAP recalibrated and Benjamini-Hochberg adjusted RECAP p-values.  
     
-    **NOTE:** There are generally 29 header lines in the MACS summary file (28 if using --nomodel). The 7th column contains the *p*-values. The output file `Treatment.RECAP.bootstrap_1.txt` will retain the same header as the original summary file but contain a new column of recalibrated *p*-values and Benjamini-Hochberg FDR-adjusted recalibrated *p*-values.
+    **NOTE:** There are generally 29 header lines in the MACS summary file (28 if using --nomodel). The 7th column contains the *p*-values. The output file `Treatment.RECAP.bootstrap_1.txt` will retain the same header as the original summary file but contain a new column of recalibrated *p*-values and Benjamini-Hochberg FDR-adjusted recalibrated *p*-values. If you're not using MACS or diffReps, change the ```software``` value to O for other.
