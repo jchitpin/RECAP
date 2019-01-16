@@ -1,5 +1,5 @@
 Please see <https://github.com/theodorejperkins/RECAP> for the latest stable build.  
-Bleeding edge builds will be posted here (none currently).
+Last edited 16-January-2019
 
 ## Introduction
 
