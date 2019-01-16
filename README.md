@@ -75,7 +75,7 @@ Suppose we are interested in analyzing a treatment and control file with diffRep
 
 ### A different peak caller
 
-Any peak caller can work with ```RECAP.pl``` as long as it uses a p-value cut-off to identify significant peaks. One of the wrapper scripts above would have to be altered by replacing the peak caller and parameters with your desired one. The number of header lines in the output file would have to be changed too. Finally, the RECAP.pl arguments ```software``` and ```delim``` would need to be set to ```O``` for other and either ```t``` for tab or ```c``` for comma.
+Any peak caller can work with ```RECAP.pl``` as long as it uses a p-value cut-off to identify significant peaks. One of the wrapper scripts above would have to be altered by replacing the peak caller and parameters with your desired one. The number of header lines in the output file would have to be changed too. The RECAP.pl arguments ```software``` and ```delim``` would be set to ```O``` for other and either ```t``` for tab or ```c``` for comma. Be sure to only keep the re-mixed summary files containing the list of picked peaks. ```RECAP.pl``` won't be able to pick up the right re-mixed summary file otherwise, especially if bootstrap is greater than 1. 
 
 ## Usage
 
