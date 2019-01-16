@@ -139,9 +139,9 @@ Choose either *(M)ACS* for MACS2, or *(D)iffReps* for diffReps, or *(O)ther* for
 
 The re-mixing process takes minutes to perform. Recalibrating the *p*-values with the Perl script should take seconds to minutes.
 
-### Example (Manual) Workflow
+## Example (Manual) Workflow
 
-The lines of code below can be adapted for any peak caller that produces *p*-values and are similar in principle to the codes in our MACS/SICER/diffReps wrapper scripts. If you'd like to create your own wrapper script for another peak caller, please adapt the following code:
+The code below can be adapted for any peak caller that produces *p*-values and is similar to the codes in the MACS/SICER/diffReps wrapper scripts. If you'd like to create your own wrapper script for another peak caller, please adapt the following:
 
 1.  Re-mix treatment and control BED files: 
 
