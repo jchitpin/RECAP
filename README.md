@@ -21,9 +21,7 @@ The first two scripts should be runnable on any system with Bash and Perl instal
 * install List::MoreUtils
 * install Math::Utils
 
-## Usage
-
-### Example Workflow using Wrapper Scripts
+## Wrapper Script Usage
 
 Argument | Description
 ------------ | -------------
@@ -36,16 +34,46 @@ Argument | Description
 -h, --help | Display this help and exit
 
 
-#### MACS
+### MACS
 
 Suppose we are interested in analyzing a treatment and control file with MACS.
 
-1. Open RECAP_MACS.sh and modify any peak-calling preferences in line 101 and 109 *except* the p-value threshold. Possible options are listed on the MACS Github page https://github.com/taoliu/MACS. Currently, the recommended default MACS settings are used for regular peak calling. 
+1. Open RECAP_MACS.sh and modify any peak-calling preferences in line 101 and 109 *except* the p-value threshold. Possible options are listed on the MACS Github page https://github.com/taoliu/MACS. Currently, the recommended default MACS settings are used for regular peak calling on an hg18-sized genome. 
 
 2. Run the script with the arguments below. Absolute directory paths must be specified and the output directory must already exist. A bootstrap of 1 is recommended and the header should be set to 29 (28 if using MACS --nomodel parameter).    
-   ```bash RECAP_MACS.sh -i ~/ -t treatment_file.bed -c control_file.bed -o ~/output_directory -b 1 -e 29 header_lines_in_output_file   ```
+   ```bash RECAP_MACS.sh -i ~/ -t treatment_file.bed -c control_file.bed -o ~/output_directory -b 1 -e 29```
    
-3. Check the output directory containing re-mixed bed files in ```re-mix```, the original peak calling output files in ```MACS_original```, re-mixed peak calling output files in ```MACS_re-mix```, and the final recalibrated output files in ```MACS_RECAP```.
+3. Check the output directory to find the re-mixed bed files in ```re-mix```, original peak calling output files in ```MACS_original```, re-mixed peak calling output files in ```MACS_re-mix```, and the final RECAP-recalibrated output files in ```MACS_RECAP```.
+
+### SICER
+
+Extra Arguments | Description
+------------ | -------------
+-w, --window | Window size
+-g, --gap | Gap size
+
+Suppose we are interested in analyzing a treatment and control file with SICER.
+
+1. Open RECAP_MACS.sh and modify any peak-calling preferences in line 104 and 114 *except* the p-value threshold. Possible options are listed in the SICER README.pdf. Currently, the recommended default SICER settings are used for regular peak calling on an hg38-sized genome. 
+
+2. Run the script with the arguments below. Absolute directory paths must be specified and the output directory must already exist. A bootstrap of 1 is recommended and the header should be set to 0. The window and gap size must be specified here because they are used to name the resulting ```*-islands-summary``` files. Window = 100 and gap = 200 are the recommended default SICER settings for regular peak calling.    
+   ```bash RECAP_SICER.sh -i ~/ -t treatment_file.bed -c control_file.bed -o ~/output_directory -b 1 -e 0 -w 100 -g 200```
+   
+3. Check the output directory to find the re-mixed bed files in ```re-mix```, original peak calling output files in ```SICER_original```, re-mixed peak calling output files in ```SICER_re-mix```, and the final RECAP-recalibrated output files in ```SICER_RECAP```.
+
+### diffReps
+
+Suppose we are interested in analyzing a treatment and control file with diffReps.
+
+1. Open RECAP_diffReps.sh and modify any peak-calling preferences in line 104 and 113 *except* the p-value threshold. Possible options are listed using ```diffReps.pl --help```. Currently, the recommended default diffReps settings are used for regular peak calling with an hg19-sized genome. 
+
+2. Run the script with the arguments below. Absolute directory paths must be specified and the output directory must already exist. A bootstrap of 1 is recommended and the header should be set to 33.    
+   ```bash RECAP_diffReps.sh -i ~/ -t treatment_file.bed -c control_file.bed -o ~/output_directory -b 1 -e 33```
+   
+3. Check the output directory to find the re-mixed bed files in ```re-mix```, original peak calling output files in ```diffReps_original```, re-mixed peak calling output files in ```diffReps_re-mix```, and the final RECAP-recalibrated output files in ```diffReps_RECAP```.
+
+
+## Usage
 
 ```
 bash RECAP_Re-Mix.sh [-i] [-t] [-c] [-o] [-m] [-b] [-h]  
@@ -111,24 +139,33 @@ Suppose we are interested in analyzing a treatment and control file with MACS an
 
 1.  Re-mix treatment and control BED files: 
 
-    ```bash RECAP_Re-Mix.sh -i ~/ChIP-Seq/files -t Treatment.bed -c Control.bed -o ~/ChIP-Seq/files/ -m unequal -b 1```
+    ```bash RECAP_Re-Mix.sh -i ~/ChIP-Seq/files -t Treatment.bed -c Control.bed -o ~/ChIP-Seq/files -m unequal -b 1```
     
     This will create a new directory `~/ChIP-Seq/files/re-mix` with files `Treatment.bootstrap_1.bed` and `Control.bootstrap_1.bed`
     
 1.  Analyze "original" files with MACS:
 
-    ```macs2 callpeak -t Treatment.bed -c Control.bed --nomodel -p 0.1 -n Analysis --outdir ~/ChIP-Seq/analysis/```
+    ```cd ~/ChIP-Seq/files```
+    ```macs2 callpeak -t Treatment.bed -c Control.bed -p 0.1 -n Analysis_Original --outdir ~/ChIP-Seq/analysis/```
     
-    This will create several files including ```Treatment_peaks.xls```. **NOTE:** Please retain only the ```_peaks.xls``` file which is to be recalibrated.
+    This will create several files including ```Analysis_Original_peaks.xls```.
     
-1.  Analyze "re-mixed" files with MACS (please use *p*=0.1 for MACS and *p*=0.99 for SICER/diffReps):
+1.  Analyze "re-mixed" files with MACS (please use *p*=0.1 for MACS and *p*=1 for SICER/diffReps):
 
-    ```macs2 callpeak -t Treatment.bootstrap_1.bed -c Control --nomodel -p 0.1 -n Treatment.bootstrap_1 --outdir ~/ChIP-Seq/analysis/```
+    ```cd ~/ChIP-Seq/files/re-mix```
+    ```macs2 callpeak -t Treatment.bootstrap_1.bed -c Control -p 0.1 -n Analysis_Remixed_bootstrap_1 --outdir ~/ChIP-Seq/analysis/```
     
-    This will create several files including ```Treatment.bootstrap_1_peaks.xls```. Please retain only the ```_peaks.xls``` file which is to be recalibrated.
+    This will create several files including ```Analysis_Remixed_bootstrap_1_peaks.xls```. Please retain only the ```_peaks.xls``` file which is to be recalibrated.
+    
+    ```cd ~/ChIP-Seq/analysis```  
+    ```find . -type f -name 'Analysis_Remixed*_peaks.narrowPeak' -delete```  
+    ```find . -type f -name 'Analysis_Remixed*_model.r' -delete```  
+    ```find . -type f -name 'Analysis_Remixed*_summits.bed' -delete```  
     
 1.  Recalibrate the *p*-values:
 
-    ```perl RECAP.pl --dirOrig ~/ChIP-Seq/analysis/ --nameOrig Treatment_peaks.xls --dirRemix ~/ChIP-Seq/analysis --nameRemix Treatment --dirOutput ~/ChIP-Seq/analysis/ --nameOutput Treatment.RECAP.bootstrap_1.txt --bootstrap 1 --header 28 --pvalCol 7 --delim t --software M```
+    ```perl RECAP.pl --dirOrig ~/ChIP-Seq/analysis/ --nameOrig Analysis_Original_peaks.xls --dirRemix ~/ChIP-Seq/analysis --nameRemix Analysis_Remixed --dirOutput ~/ChIP-Seq/analysis/ --nameOutput Treatment.RECAP.bootstrap_1.txt --bootstrap 1 --header 29 --pvalCol 7 --delim t --software M```
+    
+    This will create a file in ```~/ChIP-Seq/analysis/``` called ```Treatment.RECAP.bootstrap_1.txt```. The output will look the same as ```Analysis_Original_peaks.xls``` but with two extra columns of RECAP recalibrated and Benjamini-Hochberg adjusted RECAP p-values.  
     
     **NOTE:** There are generally 29 header lines in the MACS summary file (28 if using --nomodel). The 7th column contains the *p*-values. The output file `Analysis.RECAP.bootstrap_1.txt` will retain the same header as the original summary file but contain a new column of recalibrated *p*-values and FDR-adjusted recalibrated *p*-values.
