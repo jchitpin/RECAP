@@ -149,7 +149,7 @@ Suppose we are interested in analyzing a treatment and control file with MACS an
     
     This will create a new directory `~/ChIP-Seq/files/re-mix` with files `Treatment.bootstrap_1.bed` and `Control.bootstrap_1.bed`
     
-1.  Analyze "original" files with MACS:
+1.  Analyze "original" files with MACS (please use *p*=0.1 for MACS and *p*=1 for SICER/diffReps):
 
     ```cd ~/ChIP-Seq/files```
     ```macs2 callpeak -t Treatment.bed -c Control.bed -p 0.1 -n Analysis_Original --outdir ~/ChIP-Seq/analysis/```
@@ -174,4 +174,4 @@ Suppose we are interested in analyzing a treatment and control file with MACS an
     
     This will create a file in ```~/ChIP-Seq/analysis/``` called ```Treatment.RECAP.bootstrap_1.txt```. The output will look the same as ```Analysis_Original_peaks.xls``` but with two extra columns of RECAP recalibrated and Benjamini-Hochberg adjusted RECAP p-values.  
     
-    **NOTE:** There are generally 29 header lines in the MACS summary file (28 if using --nomodel). The 7th column contains the *p*-values. The output file `Analysis.RECAP.bootstrap_1.txt` will retain the same header as the original summary file but contain a new column of recalibrated *p*-values and FDR-adjusted recalibrated *p*-values.
+    **NOTE:** There are generally 29 header lines in the MACS summary file (28 if using --nomodel). The 7th column contains the *p*-values. The output file `Treatment.RECAP.bootstrap_1.txt` will retain the same header as the original summary file but contain a new column of recalibrated *p*-values and Benjamini-Hochberg FDR-adjusted recalibrated *p*-values.
