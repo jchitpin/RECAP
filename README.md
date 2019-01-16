@@ -44,7 +44,7 @@ Suppose we are interested in analyzing a treatment and control file with MACS.
 2. Run the script with the arguments below. Absolute directory paths must be specified and the output directory must already exist. A bootstrap of 1 is recommended and the header should be set to 29 (28 if using MACS --nomodel parameter).    
    ```bash RECAP_MACS.sh -i ~/ -t treatment_file.bed -c control_file.bed -o ~/output_directory -b 1 -e 29```
    
-3. Check the output directory to find the re-mixed bed files in ```re-mix```, original peak calling output files in ```MACS_original```, re-mixed peak calling output files in ```MACS_re-mix```, and the final RECAP-recalibrated output files in ```MACS_RECAP```.
+3. Check the output directory to find the re-mixed bed files in ```re-mix```, original peak calling output file in ```MACS_original```, re-mixed peak calling output files in ```MACS_re-mix```, and the final RECAP-recalibrated output file in ```MACS_RECAP```.
 
 ### SICER
 
@@ -60,7 +60,7 @@ Suppose we are interested in analyzing a treatment and control file with SICER.
 2. Run the script with the arguments below. Absolute directory paths must be specified and the output directory must already exist. A bootstrap of 1 is recommended and the header should be set to 0. The window and gap size must be specified here because they are used to name the resulting ```*-islands-summary``` files. Window = 100 and gap = 200 are the recommended default SICER settings for regular peak calling.    
    ```bash RECAP_SICER.sh -i ~/ -t treatment_file.bed -c control_file.bed -o ~/output_directory -b 1 -e 0 -w 100 -g 200```
    
-3. Check the output directory to find the re-mixed bed files in ```re-mix```, original peak calling output files in ```SICER_original```, re-mixed peak calling output files in ```SICER_re-mix```, and the final RECAP-recalibrated output files in ```SICER_RECAP```.
+3. Check the output directory to find the re-mixed bed files in ```re-mix```, original peak calling output file in ```SICER_original```, re-mixed peak calling output files in ```SICER_re-mix```, and the final RECAP-recalibrated output file in ```SICER_RECAP```.
 
 ### diffReps
 
@@ -71,11 +71,11 @@ Suppose we are interested in analyzing a treatment and control file with diffRep
 2. Run the script with the arguments below. Absolute directory paths must be specified and the output directory must already exist. A bootstrap of 1 is recommended and the header should be set to 33.    
    ```bash RECAP_diffReps.sh -i ~/ -t treatment_file.bed -c control_file.bed -o ~/output_directory -b 1 -e 33```
    
-3. Check the output directory to find the re-mixed bed files in ```re-mix```, original peak calling output files in ```diffReps_original```, re-mixed peak calling output files in ```diffReps_re-mix```, and the final RECAP-recalibrated output files in ```diffReps_RECAP```.
+3. Check the output directory to find the re-mixed bed files in ```re-mix```, original peak calling output file in ```diffReps_original```, re-mixed peak calling output files in ```diffReps_re-mix```, and the final RECAP-recalibrated output file in ```diffReps_RECAP```.
 
 ### A different peak caller
 
-Any peak caller can work with ```RECAP.pl``` as long as it uses a p-value cut-off to identify significant peaks. One of the wrapper scripts above would have to be altered by replacing the peak caller and parameters with your desired one. The number of header lines in the output file would have to be changed too. The RECAP.pl arguments ```software``` and ```delim``` would be set to ```O``` for other and either ```t``` for tab or ```c``` for comma. Be sure to only keep the re-mixed summary files containing the list of picked peaks. ```RECAP.pl``` won't be able to pick up the right re-mixed summary file otherwise, especially if bootstrap is greater than 1. 
+Any peak caller can work with ```RECAP.pl``` so long as it uses a p-value cut-off to identify significant peaks. One of the wrapper scripts above would have to be altered by replacing the peak caller and parameters with your desired one. The number of header lines in the output file would have to be changed too. The RECAP.pl arguments ```software``` and ```delim``` would be set to ```O``` for other and either ```t``` for tab or ```c``` for comma. Be sure to only keep the re-mixed summary files containing the list of picked peaks. ```RECAP.pl``` won't be able to pick up the right re-mixed summary file otherwise, especially if bootstrap is greater than 1. 
 
 ## Usage
 
