@@ -7,11 +7,14 @@ ChIP-seq is used extensively to identify sites of transcription factor binding o
 
 ## Installation
 
-Download RECAP and extract to your desired directory. There should be two scripts:
+Download RECAP and extract to your desired directory. There should be five scripts:
 1.  RECAP_Re-Mix.sh
 1.  RECAP.pl
+1. RECAP_MACS.sh
+1. RECAP_SICER.sh
+1. RECAP_diffReps.sh
 
-Both scripts should be runnable on any system with Bash and Perl installed. Several CPAN modules are required. To install them:
+The first two scripts should be runnable on any system with Bash and Perl installed. Several CPAN modules are required. To install them:
 * cpan
 * install List::BinarySearch
 * install List::Util
@@ -20,18 +23,43 @@ Both scripts should be runnable on any system with Bash and Perl installed. Seve
 
 ## Usage
 
+### Example Workflow using Wrapper Scripts
+
+Argument | Description
+------------ | -------------
+-i, --input | Input treatment/control BED file directory (absolute path)
+-t, --treatment | Treatment BED file
+-c, --control | Control BED file
+-o, --output | Output file directory (absolute path and must exist)
+-b, --bootstrap | Number of re-mixes
+-e, --header | Header number of peak calling output files
+-h, --help | Display this help and exit
+
+
+#### MACS
+
+Suppose we are interested in analyzing a treatment and control file with MACS.
+
+1. Open RECAP_MACS.sh and modify any peak-calling preferences in line 101 and 109 *except* the p-value threshold. Possible options are listed on the MACS Github page https://github.com/taoliu/MACS. Currently, the recommended default MACS settings are used for regular peak calling. 
+
+2. Run the script with the arguments below. Absolute directory paths must be specified and the output directory must already exist. A bootstrap of 1 is recommended and the header should be set to 29 (28 if using MACS --nomodel parameter).    
+   ```bash RECAP_MACS.sh -i ~/ -t treatment_file.bed -c control_file.bed -o ~/output_directory -b 1 -e 29 header_lines_in_output_file   ```
+   
+3. Check the output directory containing re-mixed bed files in ```re-mix```, the original peak calling output files in ```MACS_original```, re-mixed peak calling output files in ```MACS_re-mix```, and the final recalibrated output files in ```MACS_RECAP```.
+
 ```
-bash RECAP_Re-Mix.sh [-i] [-t] [-c] [-o] [-m] [-b]  
+bash RECAP_Re-Mix.sh [-i] [-t] [-c] [-o] [-m] [-b] [-h]  
 ```
 
 Argument | Description
 ------------ | -------------
--i, --input | Input treatment/control BED file directory
+-i, --input | Input treatment/control BED file directory (absolute path)
 -t, --treatment | Treatment BED file
 -c, --control | Control BED file
--o, --output | Output file directory
+-o, --output | Output file directory (absolute path and must exist)
 -m, --method | Method of re-mixing*
 -b, --bootstrap | Number of re-mixes*
+-h, --help | Display this help and exit
 
 ### Options(\*)
 
@@ -49,11 +77,11 @@ perl RECAP.pl [--dirOrig]   [--nameOrig]   [--dirRemix] [--nameRemix]
 
 Argument | Description
 ------------ | -------------
---dirOrig | Input original peak calling summary file directory
+--dirOrig | Input original peak calling summary file directory (absolute path)
 --nameOrig | Original peak calling summary file
---dirRemix | Input re-mixed peak calling summary file directory
+--dirRemix | Input re-mixed peak calling summary file directory (absolute path)
 --nameRemix | Re-mixed peak calling summary file ending in '.bootstrap_#.bed
---dirOutput | Output directory
+--dirOutput | Output directory (absolute path and must exist)
 --nameOutput | Original peak calling summary file with RECAP 
 --bootstrap | Number of re-mixing procedures*
 --header | Number of header lines in peak calling summary file
@@ -76,15 +104,6 @@ Choose either *(M)ACS* for MACS2, or *(D)iffReps* for diffReps, or *(O)ther* for
 ### Notes
 
 The re-mixing process takes minutes to perform. Recalibrating the *p*-values with the Perl script should take seconds to minutes.
-
-### Example Workflow using Wrapper Scripts
-
-Suppose we are interested in analyzing a treatment and control file with MACS and recalibrating the resulting *p*-values.
-
-1. Open RECAP_MACS.sh and modify any peak-calling preferences *except* the p-value threshold
-
-2. Run the script in your terminal.
-   ```bash RECAP_MACS.sh -i input_directory -t treatment_file -c control_file -o output_directory -b bootstrap_number -e header_lines_in_output_file   ```
 
 ### Example (Manual) Workflow
 
